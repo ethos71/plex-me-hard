@@ -3,6 +3,7 @@ input/
 data/
 config/
 transcode/
+rclone/
 
 # OS files
 .DS_Store

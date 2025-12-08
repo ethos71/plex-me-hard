@@ -26,9 +26,13 @@ services:
       - ./data/movies:/output/movies
       - ./data/tv:/output/tv
       - ./data/music:/output/music
+      - ./rclone:/root/.config/rclone
     environment:
       - INPUT_DIR=/input
       - OUTPUT_MOVIES=/output/movies
       - OUTPUT_TV=/output/tv
       - OUTPUT_MUSIC=/output/music
+      - ENABLE_GDRIVE_SYNC=true
+      - GDRIVE_FOLDER=plex-me-hard
+      - SYNC_INTERVAL=300
     restart: unless-stopped
