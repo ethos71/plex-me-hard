@@ -2,6 +2,20 @@
 
 This directory includes helpful scripts to manage your Plex server.
 
+## Troubleshooting
+
+**Can't connect to Plex? Run this first:**
+```bash
+./troubleshoot-plex.sh
+```
+
+This will check:
+- Docker installation
+- Container status
+- Port accessibility
+- Plex logs
+- Your server IP address
+
 ## Initial Setup
 
 Run this once to configure Google Drive and start the services:
@@ -15,6 +29,14 @@ This will:
 2. Verify your connection
 3. Check for the `plex-me-hard` folder
 4. Start all services
+
+## Check Movie Status
+
+To see where your movie is in the pipeline:
+
+```bash
+./check-status.sh
+```
 
 ## Manual Sync
 
