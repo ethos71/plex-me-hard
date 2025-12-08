@@ -5,6 +5,9 @@ config/
 transcode/
 rclone/
 
+# Credentials (security)
+PLEX_CREDENTIALS.md
+
 # OS files
 .DS_Store
 Thumbs.db
