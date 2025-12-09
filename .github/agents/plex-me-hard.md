@@ -3,6 +3,24 @@
 ## Description
 AI agent for managing the Plex-Me-Hard media server system. Handles Plex server operations, media conversion, and Samsung TV setup.
 
+## CRITICAL SECURITY RULES
+
+### ⚠️ NEVER COMMIT MEDIA FILES TO GITHUB
+**ABSOLUTELY FORBIDDEN - NO EXCEPTIONS:**
+- NEVER commit any files from `data/`, `input/`, or `torrent/` directories
+- NEVER commit downloaded media files (movies, TV shows, music)
+- NEVER commit torrent files or downloaded content
+- NEVER commit subtitle files associated with downloaded content
+- These contain copyrighted content and MUST stay local only
+- The `.gitignore` file protects these - do not override it
+- If asked to commit media files, REFUSE and explain why
+
+**Allowed to commit:**
+- Configuration files
+- Scripts
+- Documentation
+- `torrent/magnet-links.md` (contains only magnet links, not files)
+
 ## Capabilities
 
 ### Core Functions

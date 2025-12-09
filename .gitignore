@@ -1,11 +1,43 @@
-# Data directories
+# CRITICAL SECURITY: NEVER COMMIT MEDIA FILES OR TORRENTS TO GITHUB
+# These folders contain copyrighted content and must NEVER be uploaded
+
+# Data directories - Contains downloaded media files
 input/
 data/
 config/
 transcode/
+
+# Torrent directories - NEVER commit these to git
 torrent/downloads/
 torrent/config/
 torrent/watch/
+torrent/*.torrent
+torrent/**/*.torrent
+
+# All media file types - NEVER commit to git
+*.mp4
+*.mkv
+*.avi
+*.mov
+*.flv
+*.wmv
+*.m4v
+*.mpg
+*.mpeg
+*.webm
+*.mp3
+*.flac
+*.wav
+*.m4a
+*.aac
+*.ogg
+*.wma
+*.opus
+*.srt
+*.sub
+*.ass
+*.ssa
+*.vtt
 
 # Credentials (security) - Now in docs/robots but still private
 docs/robots/PLEX_CREDENTIALS.md
