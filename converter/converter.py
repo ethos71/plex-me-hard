@@ -115,11 +115,6 @@ if __name__ == "__main__":
     print("Starting media converter...")
     print(f"Watching directory: {INPUT_DIR}")
     
-    # Start Google Drive sync in background if enabled
-    if os.getenv('ENABLE_GDRIVE_SYNC', 'false').lower() == 'true':
-        print("Starting Google Drive sync...")
-        subprocess.Popen(['/app/sync_gdrive.sh'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    
     # Process existing files first
     process_existing_files()
     

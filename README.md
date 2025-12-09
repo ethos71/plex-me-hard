@@ -7,9 +7,6 @@ Automated Plex media server with automatic media conversion and Google Drive syn
 ```bash
 # Start services
 cd plex && docker compose up -d
-
-# Use the CLI tool
-pmh
 ```
 
 ## 📁 Project Structure
@@ -36,15 +33,12 @@ plex-me-hard/
 │   ├── tv/              # TV shows
 │   └── music/           # Music
 ├── input/               # Temp files for conversion
-└── pmh                  # CLI management tool
 ```
 
 ## 🎯 Features
 
 - **Automatic Conversion**: Drop files in `input/`, get Plex-optimized media
-- **Google Drive Sync**: Automatic download from Google Drive
 - **Samsung TV Ready**: Easy setup for streaming to Smart TVs
-- **CLI Management**: `pmh` tool for all operations
 - **Docker Based**: Easy deployment and management
 
 ## 📖 Documentation
@@ -52,18 +46,24 @@ plex-me-hard/
 - **Agent**: `.github/agents/plex-me-hard.md`
 - **Prompt**: `.github/prompts/plex-me-hard.md`
 - **Robots**: `docs/robots/` - All agent/robot documentation
-- **Plex Setup**: `plex/GOOGLE_DRIVE_SETUP.md`, `plex/SMART_TV_INSTALLATION.md`
+- **Plex Setup**: `plex/SMART_TV_INSTALLATION.md`
 
 ## 🛠️ Management
 
-Use the `pmh` CLI tool:
-
+**Docker Commands:**
 ```bash
-pmh              # Interactive menu
-pmh status       # Check system status
-pmh logs         # View converter logs
-pmh movies       # List all movies
-pmh info         # Server information
+cd plex
+docker compose ps                    # Check status
+docker compose logs -f [service]     # View logs
+docker compose restart [service]     # Restart
+docker compose up -d --build         # Rebuild and start
+```
+
+**File Operations:**
+```bash
+ls -lh data/movies/           # List movies
+cp file.mp4 input/            # Add to converter
+sudo chown -R 1000:1000 data/ # Fix permissions
 ```
 
 ## 🔧 Setup

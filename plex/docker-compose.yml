@@ -11,28 +11,24 @@ services:
       - TZ=UTC
       - VERSION=docker
     volumes:
-      - ./config:/config
-      - ./transcode:/transcode
-      - ./data/movies:/data/movies
-      - ./data/tv:/data/tv
-      - ./data/music:/data/music
+      - ../config:/config
+      - ../transcode:/transcode
+      - ../data/movies:/data/movies
+      - ../data/tv:/data/tv
+      - ../data/music:/data/music
     restart: unless-stopped
 
   converter:
-    build: ./converter
+    build: ../converter
     container_name: media-converter
     volumes:
-      - ./input:/input
-      - ./data/movies:/output/movies
-      - ./data/tv:/output/tv
-      - ./data/music:/output/music
-      - ./rclone:/root/.config/rclone
+      - ../input:/input
+      - ../data/movies:/output/movies
+      - ../data/tv:/output/tv
+      - ../data/music:/output/music
     environment:
       - INPUT_DIR=/input
       - OUTPUT_MOVIES=/output/movies
       - OUTPUT_TV=/output/tv
       - OUTPUT_MUSIC=/output/music
-      - ENABLE_GDRIVE_SYNC=true
-      - GDRIVE_FOLDER=plex-me-hard
-      - SYNC_INTERVAL=300
     restart: unless-stopped
