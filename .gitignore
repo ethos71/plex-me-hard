@@ -4,10 +4,10 @@ data/
 config/
 transcode/
 
-# Credentials (security)
-PLEX_CREDENTIALS.md
+# Credentials (security) - Now in docs/robots but still private
+docs/robots/PLEX_CREDENTIALS.md
 
-# Documentation - Keep robots docs
+# Documentation - Keep robots docs (except credentials)
 docs/*
 !docs/robots/
 

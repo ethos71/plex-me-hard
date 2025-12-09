@@ -46,6 +46,9 @@ plex-me-hard/
 - **Agent**: `.github/agents/plex-me-hard.md`
 - **Prompt**: `.github/prompts/plex-me-hard.md`
 - **Robots**: `docs/robots/` - All agent/robot documentation
+  - `plex-me-hard-agent.md` - Quick reference
+  - `INSTALLATION.md` - Installation guide
+  - `SCRIPTS.md` - Scripts reference
 - **Plex Setup**: `plex/SMART_TV_INSTALLATION.md`
 
 ## 🛠️ Management
@@ -68,7 +71,7 @@ sudo chown -R 1000:1000 data/ # Fix permissions
 
 ## 🔧 Setup
 
-See `plex/setup.sh` or `INSTALLATION.md` for detailed setup instructions.
+See `install/setup.sh` or `docs/robots/INSTALLATION.md` for detailed setup instructions.
 
 ## 📺 Access
 
