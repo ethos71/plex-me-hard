@@ -14,6 +14,16 @@ OUTPUT_MUSIC = os.getenv('OUTPUT_MUSIC', '/output/music')
 VIDEO_EXTENSIONS = {'.mp4', '.mkv', '.avi', '.mov', '.flv', '.wmv', '.m4v', '.mpg', '.mpeg', '.webm'}
 AUDIO_EXTENSIONS = {'.mp3', '.flac', '.wav', '.m4a', '.aac', '.ogg', '.wma', '.opus'}
 
+def download_subtitles(video_path):
+    """Download subtitles for a video file"""
+    try:
+        print(f"Downloading subtitles for: {video_path}")
+        subprocess.run([
+            'python3', '/app/subtitle_downloader.py', video_path
+        ], check=False)
+    except Exception as e:
+        print(f"Error downloading subtitles: {e}")
+
 class MediaConverter(FileSystemEventHandler):
     def __init__(self):
         self.processing = set()

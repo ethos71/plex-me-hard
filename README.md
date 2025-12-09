@@ -51,6 +51,7 @@ plex-me-hard/
 ## 🎯 Features
 
 - **Automatic Conversion**: Drop files in `input/`, get Plex-optimized media
+- **Automatic Subtitles**: Downloads English subtitles for all video files
 - **Torrent Processing**: Download via magnet links, auto-convert, add to Plex
 - **Samsung TV Ready**: Easy setup for streaming to Smart TVs
 - **Docker Based**: Easy deployment and management
@@ -62,6 +63,7 @@ plex-me-hard/
 - **Robots**: `docs/robots/` - All agent/robot documentation
   - `plex-me-hard-agent.md` - Quick reference
   - `torrent-processing.md` - Torrent download guide
+  - `subtitle-support.md` - Subtitle system guide
   - `INSTALLATION.md` - Installation guide
   - `SCRIPTS.md` - Scripts reference
 - **Plex Setup**: `plex/SMART_TV_INSTALLATION.md`
@@ -86,8 +88,13 @@ sudo chown -R 1000:1000 data/ # Fix permissions
 
 **Torrent Operations:**
 ```bash
-./scripts/add-torrent.sh 'magnet:?xt=...'  # Add torrent
+./scripts/add-torrent.sh 'magnet:?xt=...' --type movies
 # Access Transmission UI: http://localhost:9091
+```
+
+**Subtitle Operations:**
+```bash
+./scripts/download-subtitles.sh   # Download subtitles for all media
 ```
 
 ## 🔧 Setup
