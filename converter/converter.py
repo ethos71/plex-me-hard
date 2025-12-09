@@ -81,6 +81,9 @@ class MediaConverter(FileSystemEventHandler):
         try:
             subprocess.run(cmd, check=True, capture_output=True)
             print(f"Successfully converted: {output_file}")
+            
+            # Download subtitles for the converted video
+            download_subtitles(str(output_file))
         except subprocess.CalledProcessError as e:
             print(f"Error converting {input_file}: {e}")
     
