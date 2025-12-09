@@ -1,72 +1,87 @@
 # Plex Me Hard
 
-Automated Plex media server with automatic media conversion from raw video/audio files.
+Automated Plex media server with automatic media conversion and Google Drive sync.
 
-## Features
+## 🚀 Quick Start
 
-- **Plex Media Server**: Full-featured Plex server for streaming your media
-- **Automatic Conversion**: Watches `input/` directory and automatically converts:
-  - Videos to H.264/AAC MP4 (optimized for streaming)
-  - Audio to 320kbps MP3
-- **File Watcher**: Automatically detects new files and processes them
-- **Docker-based**: Easy deployment with Docker Compose
+```bash
+# Start services
+cd plex && docker compose up -d
 
-## Quick Start
+# Use the CLI tool
+pmh
+```
 
-### Option 1: Local Files
-
-1. **Start the services:**
-   ```bash
-   docker-compose up -d
-   ```
-
-2. **Add media files:**
-   - Drop raw video/audio files into the `input/` directory
-   - The converter will automatically process them
-   - Converted files appear in the appropriate `data/` subdirectory
-
-### Option 2: Google Drive Sync (Recommended)
-
-1. **Configure Google Drive:** (One-time setup)
-   ```bash
-   docker-compose run --rm converter rclone config
-   ```
-   See [Google Drive Setup Guide](docs/GOOGLE_DRIVE_SETUP.md) for detailed instructions.
-
-2. **Create folder in Google Drive:**
-   - Create a folder named `plex-me-hard` in your Google Drive
-
-3. **Start the services:**
-   ```bash
-   docker-compose up -d
-   ```
-
-4. **Upload files:**
-   - Upload videos/music to the `plex-me-hard` folder in Google Drive
-   - Files automatically sync and convert every 5 minutes
-   - Appear in your Plex library automatically
-
-### Access Plex
-
-- Open http://localhost:32400/web
-- Complete the initial Plex setup
-- Add libraries pointing to:
-  - Movies: `/data/movies`
-  - TV Shows: `/data/tv`
-  - Music: `/data/music`
-
-## Directory Structure
+## 📁 Project Structure
 
 ```
-.
-├── input/           # Drop raw media files here
+plex-me-hard/
+├── .github/
+│   ├── agents/           # AI agent definitions
+│   └── prompts/          # System prompts
+├── plex/                 # Plex server configuration
+│   ├── docker-compose.yml
+│   ├── setup.sh
+│   ├── troubleshoot-plex.sh
+│   ├── GOOGLE_DRIVE_SETUP.md
+│   └── SMART_TV_INSTALLATION.md
+├── converter/            # Media conversion service
+│   ├── Dockerfile
+│   ├── converter.py
+│   └── requirements.txt
+├── docs/
+│   └── robots/          # Agent/robot documentation
 ├── data/
-│   ├── movies/     # Converted movies (shown in Plex)
-│   ├── tv/         # Converted TV shows (shown in Plex)
-│   └── music/      # Converted music (shown in Plex)
-├── config/         # Plex configuration
-└── transcode/      # Plex transcoding cache
+│   ├── movies/          # Plex movies library
+│   ├── tv/              # TV shows
+│   └── music/           # Music
+├── input/               # Temp files for conversion
+└── pmh                  # CLI management tool
 ```
+
+## 🎯 Features
+
+- **Automatic Conversion**: Drop files in `input/`, get Plex-optimized media
+- **Google Drive Sync**: Automatic download from Google Drive
+- **Samsung TV Ready**: Easy setup for streaming to Smart TVs
+- **CLI Management**: `pmh` tool for all operations
+- **Docker Based**: Easy deployment and management
+
+## 📖 Documentation
+
+- **Agent**: `.github/agents/plex-me-hard.md`
+- **Prompt**: `.github/prompts/plex-me-hard.md`
+- **Robots**: `docs/robots/` - All agent/robot documentation
+- **Plex Setup**: `plex/GOOGLE_DRIVE_SETUP.md`, `plex/SMART_TV_INSTALLATION.md`
+
+## 🛠️ Management
+
+Use the `pmh` CLI tool:
+
+```bash
+pmh              # Interactive menu
+pmh status       # Check system status
+pmh logs         # View converter logs
+pmh movies       # List all movies
+pmh info         # Server information
+```
+
+## 🔧 Setup
+
+See `plex/setup.sh` or `INSTALLATION.md` for detailed setup instructions.
+
+## 📺 Access
+
+- **Plex Web UI**: http://192.168.12.143:32400/web
+- **Account**: See `PLEX_CREDENTIALS.md` (gitignored)
+
+## 🤖 AI Agents
+
+This project includes AI agent definitions for automated management:
+- Agent definition: `.github/agents/plex-me-hard.md`
+- System prompt: `.github/prompts/plex-me-hard.md`
+
+All robot/agent documentation is stored in `docs/robots/`.
 
 ## Supported Formats
 
@@ -78,33 +93,6 @@ Automated Plex media server with automatic media conversion from raw video/audio
 - **Video**: H.264/AAC MP4 (CRF 23, medium preset)
 - **Audio**: MP3 320kbps
 
-## Management
+## 📝 License
 
-**View logs:**
-```bash
-docker-compose logs -f converter    # Media converter logs
-docker-compose logs -f plex         # Plex server logs
-```
-
-**Restart services:**
-```bash
-docker-compose restart
-```
-
-**Stop services:**
-```bash
-docker-compose down
-```
-
-## Documentation
-
-- **[Smart TV Installation Guide](docs/SMART_TV_INSTALLATION.md)** - How to install Plex on Samsung, LG, Sony, Roku, Apple TV, etc.
-- **[Google Drive Setup Guide](docs/GOOGLE_DRIVE_SETUP.md)** - Configure automatic syncing from Google Drive
-
-## Notes
-
-- First-time setup requires completing Plex configuration in the web UI
-- Large video files may take time to convert
-- Conversion happens automatically when files are added to `input/` or synced from Google Drive
-- Original files are not deleted automatically
-- Google Drive sync runs every 5 minutes by default (configurable)
+Personal project - use at your own discretion.

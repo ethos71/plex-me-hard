@@ -5,6 +5,7 @@ PLEX_DIR="/home/dominick/workspace/plex-me-hard"
 PLEX_URL="http://192.168.12.143:32400/web"
 PLEX_EMAIL="dominick.do.campbell+1@gmail.com"
 DOCS_DIR="$PLEX_DIR/docs/robots"
+PLEX_COMPOSE="$PLEX_DIR/plex/docker-compose.yml"
 
 show_header() {
     echo "================================================="
@@ -33,7 +34,7 @@ show_menu() {
 check_status() {
     echo "📊 System Status:"
     echo "-------------------"
-    cd "$PLEX_DIR" && sudo docker compose ps
+    cd "$PLEX_DIR" && sudo docker compose -f "$PLEX_COMPOSE" ps
     echo ""
     echo "📁 Media Files:"
     echo "  Movies: $(ls -1 "$PLEX_DIR/data/movies/" 2>/dev/null | wc -l) files"
@@ -91,13 +92,13 @@ add_from_local() {
 view_converter_logs() {
     echo "📜 Converter Logs (Ctrl+C to exit)"
     echo "-----------------------------------"
-    cd "$PLEX_DIR" && sudo docker compose logs -f converter
+    cd "$PLEX_DIR" && sudo docker compose -f "$PLEX_COMPOSE" logs -f converter
 }
 
 view_plex_logs() {
     echo "📜 Plex Logs (Ctrl+C to exit)"
     echo "-----------------------------"
-    cd "$PLEX_DIR" && sudo docker compose logs -f plex
+    cd "$PLEX_DIR" && sudo docker compose -f "$PLEX_COMPOSE" logs -f plex
 }
 
 list_movies() {
@@ -108,13 +109,13 @@ list_movies() {
 
 restart_plex() {
     echo "🔄 Restarting Plex server..."
-    cd "$PLEX_DIR" && sudo docker compose restart plex
+    cd "$PLEX_DIR" && sudo docker compose -f "$PLEX_COMPOSE" restart plex
     echo "✅ Plex restarted"
 }
 
 restart_converter() {
     echo "🔄 Restarting converter..."
-    cd "$PLEX_DIR" && sudo docker compose restart converter
+    cd "$PLEX_DIR" && sudo docker compose -f "$PLEX_COMPOSE" restart converter
     echo "✅ Converter restarted"
 }
 
