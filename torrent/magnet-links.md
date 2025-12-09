@@ -48,3 +48,55 @@ magnet:?xt=urn:btih:C30BC03D4A878CFCCE94BCBB239017315E5C67EC&dn=The.Iron.Giant.1
 
 ---
 
+
+## 2025-12-09
+
+### The Polar Express (2004) 720p BrRip x264 - 550MB - YIFY
+- **Added:** 2025-12-09 22:31:45 UTC
+- **Type:** movies
+- **Magnet Link:**
+```
+magnet:?xt=urn:btih:FC22D3B242CAD0EE50ED94EA448D47989488DF02&dn=The%20Polar%20Express%20(2004)%20720p%20BrRip%20x264%20-%20550MB%20-%20YIFY&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=udp%3A%2F%2Fopen.stealth.si%3A80%2Fannounce&tr=udp%3A%2F%2Ftracker.torrent.eu.org%3A451%2Fannounce&tr=udp%3A%2F%2Ftracker.bittor.pw%3A1337%2Fannounce&tr=udp%3A%2F%2Fpublic.popcorn-tracker.org%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker.dler.org%3A6969%2Fannounce&tr=udp%3A%2F%2Fexodus.desync.com%3A6969&tr=udp%3A%2F%2Fopen.demonii.com%3A1337%2Fannounce&tr=udp%3A%2F%2Fglotorrents.pw%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftorrent.gresille.org%3A80%2Fannounce&tr=udp%3A%2F%2Fp4p.arenabg.com%3A1337&tr=udp%3A%2F%2Ftracker.internetwarriors.net%3A1337
+```
+
+---
+
+
+## 2025-12-09
+
+### The Thing (1982) 720p BrRip x264 - 650MB - YIFY
+- **Added:** 2025-12-09 22:35:56 UTC
+- **Type:** movies
+- **Magnet Link:**
+```
+magnet:?xt=urn:btih:3D6EFE44A48FFFFDEE553CFAB6FCB682AB06B87A&dn=The%20Thing%20(1982)%20720p%20BrRip%20x264%20-%20650MB%20-%20YIFY&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=udp%3A%2F%2Fopen.stealth.si%3A80%2Fannounce&tr=udp%3A%2F%2Ftracker.torrent.eu.org%3A451%2Fannounce&tr=udp%3A%2F%2Ftracker.bittor.pw%3A1337%2Fannounce&tr=udp%3A%2F%2Fpublic.popcorn-tracker.org%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker.dler.org%3A6969%2Fannounce&tr=udp%3A%2F%2Fexodus.desync.com%3A6969&tr=udp%3A%2F%2Fopen.demonii.com%3A1337%2Fannounce&tr=udp%3A%2F%2Fglotorrents.pw%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftorrent.gresille.org%3A80%2Fannounce&tr=udp%3A%2F%2Fp4p.arenabg.com%3A1337&tr=udp%3A%2F%2Ftracker.internetwarriors.net%3A1337
+```
+
+---
+
+
+## 2025-12-09
+
+### The.Super.Mario.Bros.Movie.2023.BDRip.x264-PiGNUS
+- **Added:** 2025-12-09 22:37:57 UTC
+- **Type:** movies
+- **Magnet Link:**
+```
+magnet:?xt=urn:btih:AB788316F5091D948E741A81421194FA91B6B217&dn=The.Super.Mario.Bros.Movie.2023.BDRip.x264-PiGNUS&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=udp%3A%2F%2Fopen.stealth.si%3A80%2Fannounce&tr=udp%3A%2F%2Ftracker.torrent.eu.org%3A451%2Fannounce&tr=udp%3A%2F%2Ftracker.bittor.pw%3A1337%2Fannounce&tr=udp%3A%2F%2Fpublic.popcorn-tracker.org%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker.dler.org%3A6969%2Fannounce&tr=udp%3A%2F%2Fexodus.desync.com%3A6969&tr=udp%3A%2F%2Fopen.demonii.com%3A1337%2Fannounce&tr=udp%3A%2F%2Fglotorrents.pw%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftorrent.gresille.org%3A80%2Fannounce&tr=udp%3A%2F%2Fp4p.arenabg.com%3A1337&tr=udp%3A%2F%2Ftracker.internetwarriors.net%3A1337
+```
+
+---
+
+
+## 2025-12-09
+
+### Super.Mario.Bros.1993.BRRip.XviD.MP3-RARBG
+- **Added:** 2025-12-09 22:38:47 UTC
+- **Type:** movies
+- **Magnet Link:**
+```
+magnet:?xt=urn:btih:7AF827207C46BBB7E41271B8B0EE7D59335AB80A&dn=Super.Mario.Bros.1993.BRRip.XviD.MP3-RARBG&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337&tr=udp%3A%2F%2Fopen.stealth.si%3A80%2Fannounce&tr=udp%3A%2F%2Ftracker.torrent.eu.org%3A451%2Fannounce&tr=udp%3A%2F%2Ftracker.bittor.pw%3A1337%2Fannounce&tr=udp%3A%2F%2Fpublic.popcorn-tracker.org%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker.dler.org%3A6969%2Fannounce&tr=udp%3A%2F%2Fexodus.desync.com%3A6969&tr=udp%3A%2F%2Fopen.demonii.com%3A1337%2Fannounce&tr=udp%3A%2F%2Fglotorrents.pw%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969&tr=udp%3A%2F%2Ftorrent.gresille.org%3A80%2Fannounce&tr=udp%3A%2F%2Fp4p.arenabg.com%3A1337&tr=udp%3A%2F%2Ftracker.internetwarriors.net%3A1337
+```
+
+---
+
