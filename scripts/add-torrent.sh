@@ -10,6 +10,7 @@ TORRENT_DIR="$PROJECT_DIR/torrent/downloads"
 MOVIES_DIR="$PROJECT_DIR/data/movies"
 TV_DIR="$PROJECT_DIR/data/tv"
 MUSIC_DIR="$PROJECT_DIR/data/music"
+MAGNET_LOG="$PROJECT_DIR/torrent/magnet-links.md"
 
 # Colors for output
 RED='\033[0;31m'
@@ -28,6 +29,57 @@ usage() {
     echo "Options:"
     echo "  --type     Specify media type (movies, tv, music). Required."
     exit 1
+}
+
+extract_name_from_magnet() {
+    local magnet_link="$1"
+    # Extract the name from the dn= parameter
+    echo "$magnet_link" | grep -oP '(?<=dn=)[^&]+' | python3 -c "import sys, urllib.parse; print(urllib.parse.unquote(sys.stdin.read()))" || echo "Unknown"
+}
+
+log_magnet_link() {
+    local magnet_link="$1"
+    local media_type="$2"
+    local name=$(extract_name_from_magnet "$magnet_link")
+    local timestamp=$(date -u '+%Y-%m-%d %H:%M:%S UTC')
+    local date_header=$(date '+%Y-%m-%d')
+    
+    # Create log file if it doesn't exist
+    if [ ! -f "$MAGNET_LOG" ]; then
+        cat > "$MAGNET_LOG" << 'EOF'
+# Torrent Magnet Links History
+# Auto-generated list of all torrent magnet links added to Plex-Me-Hard
+
+## Format
+Each entry includes:
+- Date/Time added
+- Movie/Show name (extracted from magnet link)
+- Media type
+- Magnet link
+
+---
+
+EOF
+    fi
+    
+    # Append the new entry
+    cat >> "$MAGNET_LOG" << EOF
+
+## $date_header
+
+### $name
+- **Added:** $timestamp
+- **Type:** $media_type
+- **Magnet Link:**
+\`\`\`
+$magnet_link
+\`\`\`
+
+---
+
+EOF
+    
+    echo -e "${GREEN}✓ Magnet link logged to: $MAGNET_LOG${NC}"
 }
 
 check_dependencies() {
@@ -145,6 +197,10 @@ main() {
     echo -e "${GREEN}==================================${NC}"
     echo -e "${GREEN}Plex-Me-Hard Torrent Processor${NC}"
     echo -e "${GREEN}==================================${NC}"
+    echo ""
+    
+    # Log the magnet link
+    log_magnet_link "$magnet_link" "$media_type"
     echo ""
     
     # Download torrent
