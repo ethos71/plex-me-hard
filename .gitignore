@@ -8,6 +8,10 @@ rclone/
 # Credentials (security)
 PLEX_CREDENTIALS.md
 
+# Documentation - Keep robots docs
+docs/*
+!docs/robots/
+
 # OS files
 .DS_Store
 Thumbs.db
@@ -16,3 +20,11 @@ Thumbs.db
 __pycache__/
 *.py[cod]
 *$py.class
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.swp
+*~

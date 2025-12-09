@@ -4,6 +4,7 @@
 PLEX_DIR="/home/dominick/workspace/plex-me-hard"
 PLEX_URL="http://192.168.12.143:32400/web"
 PLEX_EMAIL="dominick.do.campbell+1@gmail.com"
+DOCS_DIR="$PLEX_DIR/docs/robots"
 
 show_header() {
     echo "================================================="
@@ -24,6 +25,7 @@ show_menu() {
     echo "  7) Restart Plex"
     echo "  8) Restart converter"
     echo "  9) Get Plex server info"
+    echo "  10) Create new robot/agent doc"
     echo "  0) Exit"
     echo ""
 }
@@ -132,6 +134,96 @@ show_server_info() {
     echo "Project Directory: $PLEX_DIR"
     echo "Input Folder: $PLEX_DIR/input/"
     echo "Movies Folder: $PLEX_DIR/data/movies/"
+    echo "Robots/Agents Docs: $DOCS_DIR"
+}
+
+create_robot_doc() {
+    echo "🤖 Create New Robot/Agent Documentation"
+    echo "---------------------------------------"
+    echo ""
+    read -p "Enter robot/agent name (e.g., 'media-finder'): " robot_name
+    
+    if [ -z "$robot_name" ]; then
+        echo "❌ Robot name cannot be empty"
+        return
+    fi
+    
+    # Sanitize filename
+    filename=$(echo "$robot_name" | tr '[:upper:]' '[:lower:]' | tr ' ' '-')
+    filepath="$DOCS_DIR/${filename}.md"
+    
+    if [ -f "$filepath" ]; then
+        echo "⚠️  File already exists: $filepath"
+        read -p "Overwrite? (y/n): " confirm
+        if [ "$confirm" != "y" ]; then
+            echo "Cancelled"
+            return
+        fi
+    fi
+    
+    echo ""
+    read -p "Enter brief description: " description
+    
+    # Create documentation template
+    cat > "$filepath" << EOF
+# ${robot_name^} Robot/Agent
+
+**Created:** $(date '+%Y-%m-%d %H:%M:%S')  
+**Description:** $description
+
+## Purpose
+
+[Describe what this robot/agent does]
+
+## Usage
+
+\`\`\`bash
+# Example usage
+\`\`\`
+
+## Configuration
+
+[Any configuration needed]
+
+## Commands
+
+- \`command1\` - Description
+- \`command2\` - Description
+
+## Examples
+
+### Example 1: [Title]
+
+\`\`\`bash
+# Example code
+\`\`\`
+
+## Notes
+
+- Note 1
+- Note 2
+
+## Troubleshooting
+
+**Issue:** [Problem description]  
+**Solution:** [How to fix]
+
+---
+
+*Part of the Plex-Me-Hard (PMH) system*
+EOF
+    
+    echo ""
+    echo "✅ Documentation created: $filepath"
+    echo ""
+    read -p "Open in editor? (y/n): " edit_now
+    
+    if [ "$edit_now" = "y" ]; then
+        ${EDITOR:-nano} "$filepath"
+    fi
+    
+    echo ""
+    echo "📁 View all robot docs: ls -lh $DOCS_DIR"
 }
 
 # Main script
@@ -163,6 +255,7 @@ else
             7) restart_plex ;;
             8) restart_converter ;;
             9) show_server_info ;;
+            10) create_robot_doc ;;
             0) echo "Goodbye! 🎬"; exit 0 ;;
             *) echo "❌ Invalid choice" ;;
         esac
