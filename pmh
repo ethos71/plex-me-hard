@@ -1,0 +1,175 @@
+#!/bin/bash
+# Plex-Me-Hard (PMH) - Quick Management Agent
+
+PLEX_DIR="/home/dominick/workspace/plex-me-hard"
+PLEX_URL="http://192.168.12.143:32400/web"
+PLEX_EMAIL="dominick.do.campbell+1@gmail.com"
+
+show_header() {
+    echo "================================================="
+    echo "  Plex-Me-Hard (PMH) - Media Server Manager"
+    echo "================================================="
+    echo ""
+}
+
+show_menu() {
+    echo "What would you like to do?"
+    echo ""
+    echo "  1) Check status"
+    echo "  2) Add media from Google Drive"
+    echo "  3) Add media from local file"
+    echo "  4) View converter logs"
+    echo "  5) View Plex logs"
+    echo "  6) List movies in library"
+    echo "  7) Restart Plex"
+    echo "  8) Restart converter"
+    echo "  9) Get Plex server info"
+    echo "  0) Exit"
+    echo ""
+}
+
+check_status() {
+    echo "📊 System Status:"
+    echo "-------------------"
+    cd "$PLEX_DIR" && sudo docker compose ps
+    echo ""
+    echo "📁 Media Files:"
+    echo "  Movies: $(ls -1 "$PLEX_DIR/data/movies/" 2>/dev/null | wc -l) files"
+    echo "  TV Shows: $(ls -1 "$PLEX_DIR/data/tv/" 2>/dev/null | wc -l) files"
+    echo "  Music: $(ls -1 "$PLEX_DIR/data/music/" 2>/dev/null | wc -l) files"
+    echo ""
+    echo "🌐 Plex Web: $PLEX_URL"
+    echo "📧 Account: $PLEX_EMAIL"
+}
+
+add_from_gdrive() {
+    echo "📥 Add Media from Google Drive"
+    echo "--------------------------------"
+    echo ""
+    echo "Steps:"
+    echo "1. Make sure the file is shared as 'Anyone with the link'"
+    echo "2. Get the file URL from Google Drive"
+    echo ""
+    read -p "Enter Google Drive file URL: " gdrive_url
+    
+    if [[ $gdrive_url == *"drive.google.com"* ]]; then
+        # Extract file ID
+        file_id=$(echo "$gdrive_url" | grep -oP '(?<=d/)[^/]+' || echo "$gdrive_url" | grep -oP '(?<=id=)[^&]+')
+        
+        if [ -n "$file_id" ]; then
+            echo "Downloading file ID: $file_id"
+            cd "$PLEX_DIR/input"
+            ~/.local/bin/gdown "$file_id"
+            echo ""
+            echo "✅ Download complete! The converter will process it automatically."
+            echo "Check progress with: pmh (option 4)"
+        else
+            echo "❌ Could not extract file ID from URL"
+        fi
+    else
+        echo "❌ Invalid Google Drive URL"
+    fi
+}
+
+add_from_local() {
+    echo "📁 Add Media from Local File"
+    echo "-----------------------------"
+    echo ""
+    read -p "Enter full path to media file: " file_path
+    
+    if [ -f "$file_path" ]; then
+        echo "Copying to input directory..."
+        sudo cp "$file_path" "$PLEX_DIR/input/"
+        echo "✅ File copied! The converter will process it automatically."
+    else
+        echo "❌ File not found: $file_path"
+    fi
+}
+
+view_converter_logs() {
+    echo "📜 Converter Logs (Ctrl+C to exit)"
+    echo "-----------------------------------"
+    cd "$PLEX_DIR" && sudo docker compose logs -f converter
+}
+
+view_plex_logs() {
+    echo "📜 Plex Logs (Ctrl+C to exit)"
+    echo "-----------------------------"
+    cd "$PLEX_DIR" && sudo docker compose logs -f plex
+}
+
+list_movies() {
+    echo "🎬 Movies in Library:"
+    echo "---------------------"
+    ls -lh "$PLEX_DIR/data/movies/" 2>/dev/null || echo "No movies found"
+}
+
+restart_plex() {
+    echo "🔄 Restarting Plex server..."
+    cd "$PLEX_DIR" && sudo docker compose restart plex
+    echo "✅ Plex restarted"
+}
+
+restart_converter() {
+    echo "🔄 Restarting converter..."
+    cd "$PLEX_DIR" && sudo docker compose restart converter
+    echo "✅ Converter restarted"
+}
+
+show_server_info() {
+    echo "ℹ️  Plex Server Information:"
+    echo "----------------------------"
+    echo "Web Access: $PLEX_URL"
+    echo "Local IP: $(hostname -I | awk '{print $1}')"
+    echo "Email: $PLEX_EMAIL"
+    echo ""
+    echo "Samsung TV Setup:"
+    echo "  1. Install Plex app on TV"
+    echo "  2. Get 4-digit code from TV"
+    echo "  3. Visit: plex.tv/link"
+    echo "  4. Enter code"
+    echo ""
+    echo "Project Directory: $PLEX_DIR"
+    echo "Input Folder: $PLEX_DIR/input/"
+    echo "Movies Folder: $PLEX_DIR/data/movies/"
+}
+
+# Main script
+show_header
+
+if [ "$1" != "" ]; then
+    # Direct command mode
+    case "$1" in
+        status) check_status ;;
+        logs) view_converter_logs ;;
+        movies) list_movies ;;
+        info) show_server_info ;;
+        *) echo "Unknown command: $1" ;;
+    esac
+else
+    # Interactive menu mode
+    while true; do
+        show_menu
+        read -p "Enter choice [0-9]: " choice
+        echo ""
+        
+        case $choice in
+            1) check_status ;;
+            2) add_from_gdrive ;;
+            3) add_from_local ;;
+            4) view_converter_logs ;;
+            5) view_plex_logs ;;
+            6) list_movies ;;
+            7) restart_plex ;;
+            8) restart_converter ;;
+            9) show_server_info ;;
+            0) echo "Goodbye! 🎬"; exit 0 ;;
+            *) echo "❌ Invalid choice" ;;
+        esac
+        
+        echo ""
+        read -p "Press Enter to continue..."
+        clear
+        show_header
+    done
+fi
