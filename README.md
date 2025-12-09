@@ -16,28 +16,42 @@ plex-me-hard/
 ├── .github/
 │   ├── agents/           # AI agent definitions
 │   └── prompts/          # System prompts
+├── scripts/              # Installation and setup scripts
+│   ├── get-docker.sh
+│   ├── setup.sh
+│   └── add-torrent.sh    # Torrent processing script
 ├── plex/                 # Plex server configuration
 │   ├── docker-compose.yml
-│   ├── setup.sh
+│   ├── check-status.sh
 │   ├── troubleshoot-plex.sh
-│   ├── GOOGLE_DRIVE_SETUP.md
 │   └── SMART_TV_INSTALLATION.md
 ├── converter/            # Media conversion service
 │   ├── Dockerfile
 │   ├── converter.py
 │   └── requirements.txt
+├── torrent/              # Torrent downloads
+│   ├── downloads/       # Temporary download location
+│   ├── watch/           # Drop .torrent files here
+│   └── config/          # Transmission config
 ├── docs/
 │   └── robots/          # Agent/robot documentation
+│       ├── plex-me-hard-agent.md
+│       ├── torrent-processing.md
+│       ├── INSTALLATION.md
+│       ├── SCRIPTS.md
+│       └── PLEX_CREDENTIALS.md (gitignored)
 ├── data/
 │   ├── movies/          # Plex movies library
 │   ├── tv/              # TV shows
 │   └── music/           # Music
-├── input/               # Temp files for conversion
+└── input/               # Temp files for conversion
+```
 ```
 
 ## 🎯 Features
 
 - **Automatic Conversion**: Drop files in `input/`, get Plex-optimized media
+- **Torrent Processing**: Download via magnet links, auto-convert, add to Plex
 - **Samsung TV Ready**: Easy setup for streaming to Smart TVs
 - **Docker Based**: Easy deployment and management
 
@@ -47,6 +61,7 @@ plex-me-hard/
 - **Prompt**: `.github/prompts/plex-me-hard.md`
 - **Robots**: `docs/robots/` - All agent/robot documentation
   - `plex-me-hard-agent.md` - Quick reference
+  - `torrent-processing.md` - Torrent download guide
   - `INSTALLATION.md` - Installation guide
   - `SCRIPTS.md` - Scripts reference
 - **Plex Setup**: `plex/SMART_TV_INSTALLATION.md`
@@ -67,6 +82,12 @@ docker compose up -d --build         # Rebuild and start
 ls -lh data/movies/           # List movies
 cp file.mp4 input/            # Add to converter
 sudo chown -R 1000:1000 data/ # Fix permissions
+```
+
+**Torrent Operations:**
+```bash
+./scripts/add-torrent.sh 'magnet:?xt=...'  # Add torrent
+# Access Transmission UI: http://localhost:9091
 ```
 
 ## 🔧 Setup

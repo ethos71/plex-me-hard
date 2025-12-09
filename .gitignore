@@ -3,6 +3,7 @@ input/
 data/
 config/
 transcode/
+torrent/
 
 # Credentials (security) - Now in docs/robots but still private
 docs/robots/PLEX_CREDENTIALS.md

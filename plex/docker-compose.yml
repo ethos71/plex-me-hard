@@ -32,3 +32,21 @@ services:
       - OUTPUT_TV=/output/tv
       - OUTPUT_MUSIC=/output/music
     restart: unless-stopped
+
+  transmission:
+    image: lscr.io/linuxserver/transmission:latest
+    container_name: transmission
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=UTC
+    volumes:
+      - ../torrent/config:/config
+      - ../torrent/downloads:/downloads
+      - ../torrent/watch:/watch
+      - ../input:/input
+    ports:
+      - 9091:9091
+      - 51413:51413
+      - 51413:51413/udp
+    restart: unless-stopped
