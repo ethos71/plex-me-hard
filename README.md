@@ -71,7 +71,7 @@ sudo chown -R 1000:1000 data/ # Fix permissions
 
 ## 🔧 Setup
 
-See `install/setup.sh` or `docs/robots/INSTALLATION.md` for detailed setup instructions.
+See `scripts/setup.sh` or `docs/robots/INSTALLATION.md` for detailed setup instructions.
 
 ## 📺 Access
 
