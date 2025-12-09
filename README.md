@@ -19,11 +19,11 @@ plex-me-hard/
 ├── scripts/              # Installation and setup scripts
 │   ├── get-docker.sh
 │   ├── setup.sh
-│   └── add-torrent.sh    # Torrent processing script
+│   ├── add-torrent.sh
+│   ├── check-status.sh
+│   └── troubleshoot-plex.sh
 ├── plex/                 # Plex server configuration
 │   ├── docker-compose.yml
-│   ├── check-status.sh
-│   ├── troubleshoot-plex.sh
 │   └── SMART_TV_INSTALLATION.md
 ├── converter/            # Media conversion service
 │   ├── Dockerfile

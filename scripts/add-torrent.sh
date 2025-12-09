@@ -1,13 +1,15 @@
 #!/bin/bash
 # Torrent Processing Script for Plex-Me-Hard
-# Downloads torrents via magnet links and processes them through the converter
+# Downloads torrents via magnet links and adds them directly to Plex
 
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
 TORRENT_DIR="$PROJECT_DIR/torrent/downloads"
-INPUT_DIR="$PROJECT_DIR/input"
+MOVIES_DIR="$PROJECT_DIR/data/movies"
+TV_DIR="$PROJECT_DIR/data/tv"
+MUSIC_DIR="$PROJECT_DIR/data/music"
 
 # Colors for output
 RED='\033[0;31m'
@@ -20,10 +22,11 @@ usage() {
     echo ""
     echo "Examples:"
     echo "  $0 'magnet:?xt=urn:btih:...' --type movies"
-    echo "  $0 'magnet:?xt=urn:btih:...'"
+    echo "  $0 'magnet:?xt=urn:btih:...' --type tv"
+    echo "  $0 'magnet:?xt=urn:btih:...' --type music"
     echo ""
     echo "Options:"
-    echo "  --type     Specify media type (movies, tv, music). Auto-detects if not specified."
+    echo "  --type     Specify media type (movies, tv, music). Required."
     exit 1
 }
 
@@ -44,7 +47,6 @@ download_torrent() {
     # Download using transmission-cli
     transmission-cli \
         --download-dir "$TORRENT_DIR" \
-        --finish "$INPUT_DIR" \
         "$magnet_link"
     
     if [ $? -eq 0 ]; then
@@ -56,10 +58,29 @@ download_torrent() {
     fi
 }
 
-move_to_input() {
-    echo -e "${GREEN}Moving files to converter input...${NC}"
+move_to_plex() {
+    local media_type="$1"
+    local dest_dir=""
     
-    # Find all downloaded files and move to input
+    case "$media_type" in
+        movies)
+            dest_dir="$MOVIES_DIR"
+            ;;
+        tv)
+            dest_dir="$TV_DIR"
+            ;;
+        music)
+            dest_dir="$MUSIC_DIR"
+            ;;
+        *)
+            echo -e "${RED}Error: Invalid media type${NC}"
+            return 1
+            ;;
+    esac
+    
+    echo -e "${GREEN}Moving files to Plex library: $media_type${NC}"
+    
+    # Find all media files and move to appropriate directory
     find "$TORRENT_DIR" -type f \( \
         -iname "*.mp4" -o \
         -iname "*.mkv" -o \
@@ -67,11 +88,12 @@ move_to_input() {
         -iname "*.mov" -o \
         -iname "*.mp3" -o \
         -iname "*.flac" -o \
-        -iname "*.wav" \
-    \) -exec mv {} "$INPUT_DIR/" \;
+        -iname "*.wav" -o \
+        -iname "*.m4a" \
+    \) -exec mv {} "$dest_dir/" \;
     
-    echo -e "${GREEN}✓ Files moved to input folder for processing${NC}"
-    echo "The converter will automatically process them."
+    echo -e "${GREEN}✓ Files moved to $dest_dir${NC}"
+    echo "Plex will automatically detect them."
 }
 
 cleanup_torrent_dir() {
@@ -81,12 +103,32 @@ cleanup_torrent_dir() {
 }
 
 main() {
-    if [ "$#" -lt 1 ]; then
+    if [ "$#" -lt 2 ]; then
         usage
     fi
     
     local magnet_link="$1"
-    local media_type="${2:-auto}"
+    local media_type=""
+    
+    # Parse arguments
+    shift
+    while [[ $# -gt 0 ]]; do
+        case $1 in
+            --type)
+                media_type="$2"
+                shift 2
+                ;;
+            *)
+                echo -e "${RED}Unknown option: $1${NC}"
+                usage
+                ;;
+        esac
+    done
+    
+    if [ -z "$media_type" ]; then
+        echo -e "${RED}Error: --type is required${NC}"
+        usage
+    fi
     
     # Validate magnet link
     if [[ ! "$magnet_link" =~ ^magnet:\?xt=urn: ]]; then
@@ -98,7 +140,7 @@ main() {
     check_dependencies
     
     # Create directories if they don't exist
-    mkdir -p "$TORRENT_DIR" "$INPUT_DIR"
+    mkdir -p "$TORRENT_DIR" "$MOVIES_DIR" "$TV_DIR" "$MUSIC_DIR"
     
     echo -e "${GREEN}==================================${NC}"
     echo -e "${GREEN}Plex-Me-Hard Torrent Processor${NC}"
@@ -107,8 +149,8 @@ main() {
     
     # Download torrent
     if download_torrent "$magnet_link"; then
-        # Move files to input for conversion
-        move_to_input
+        # Move files directly to Plex library
+        move_to_plex "$media_type"
         
         # Cleanup
         cleanup_torrent_dir
@@ -118,11 +160,11 @@ main() {
         echo -e "${GREEN}✓ Process Complete!${NC}"
         echo -e "${GREEN}==================================${NC}"
         echo ""
-        echo "Files are now being processed by the converter."
-        echo "Check conversion progress with:"
-        echo "  cd plex && docker compose logs -f converter"
+        echo "Files have been added to your Plex library!"
+        echo "Media type: $media_type"
+        echo "Location: data/$media_type/"
         echo ""
-        echo "Files will appear in Plex shortly!"
+        echo "Open Plex to watch: http://192.168.12.143:32400/web"
     else
         echo -e "${RED}Failed to process torrent${NC}"
         exit 1

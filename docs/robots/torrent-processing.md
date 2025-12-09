@@ -45,7 +45,13 @@ torrent/
 2. Click "Open Torrent"
 3. Paste magnet link or upload .torrent file
 4. Files download to `torrent/downloads/`
-5. Move completed files to `input/` for processing
+5. Manually move completed files to `data/movies/`, `data/tv/`, or `data/music/`
+6. Plex auto-detects them
+
+**Manual Move Example:**
+```bash
+mv torrent/downloads/*.mp4 data/movies/
+```
 
 ### Method 3: Watch Folder
 
@@ -113,7 +119,7 @@ mv torrent/downloads/*.mp4 input/
 
 ### Download a Movie
 ```bash
-./scripts/add-torrent.sh 'magnet:?xt=urn:btih:c12fe1c06bba254a9dc9f519b335aa7c1367a88a'
+./scripts/add-torrent.sh 'magnet:?xt=urn:btih:c12fe1c06bba254a9dc9f519b335aa7c1367a88a' --type movies
 ```
 
 ### Download TV Show
@@ -129,8 +135,9 @@ mv torrent/downloads/*.mp4 input/
 ## Notes
 
 - Torrent downloads can take time depending on seeders
-- Conversion happens automatically after download completes
-- Original torrent files are cleaned up after processing
+- Files go directly to Plex library (no conversion needed)
+- Supports MP4, MKV, AVI, MOV, MP3, FLAC, WAV, M4A
+- Original torrent files are cleaned up after moving
 - Use VPN if concerned about privacy
 - Ensure you have rights to download the content
 
@@ -139,8 +146,8 @@ mv torrent/downloads/*.mp4 input/
 **Issue:** Transmission container won't start  
 **Solution:** Check port 9091 isn't already in use: `sudo lsof -i :9091`
 
-**Issue:** Downloads not moving to input  
-**Solution:** Check permissions: `sudo chown -R 1000:1000 torrent/ input/`
+**Issue:** Downloads not moving to Plex library  
+**Solution:** Check permissions: `sudo chown -R 1000:1000 torrent/ data/`
 
 **Issue:** Slow download speeds  
 **Solution:** 
