@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  plex:
+    image: lscr.io/linuxserver/plex:latest
+    container_name: plex
+    network_mode: host
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=UTC
+      - VERSION=docker
+    volumes:
+      - ../config:/config
+      - ../transcode:/transcode
+      - ../data/movies:/data/movies
+      - ../data/tv:/data/tv
+      - ../data/music:/data/music
+    restart: unless-stopped
+
+  converter:
+    build: ../converter
+    container_name: media-converter
+    volumes:
+      - ../input:/input
+      - ../data/movies:/output/movies
+      - ../data/tv:/output/tv
+      - ../data/music:/output/music
+    environment:
+      - INPUT_DIR=/input
+      - OUTPUT_MOVIES=/output/movies
+      - OUTPUT_TV=/output/tv
+      - OUTPUT_MUSIC=/output/music
+    restart: unless-stopped
+
+  transmission:
+    image: lscr.io/linuxserver/transmission:latest
+    container_name: transmission
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=UTC
+    volumes:
+      - ../torrent/config:/config
+      - ../torrent/downloads:/downloads
+      - ../torrent/watch:/watch
+      - ../input:/input
+    ports:
+      - 9091:9091
+      - 51413:51413
+      - 51413:51413/udp
+    restart: unless-stopped
