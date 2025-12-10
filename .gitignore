@@ -42,6 +42,13 @@ torrent/**/*.torrent
 # Credentials (security) - Now in docs/robots but still private
 docs/robots/PLEX_CREDENTIALS.md
 
+# Backup directories - Never commit backups
+*.backup-*/
+config.backup-*/
+data.backup-*/
+torrent.backup-*/
+transcode.backup-*/
+
 # Documentation - Keep robots docs (except credentials)
 docs/*
 !docs/robots/

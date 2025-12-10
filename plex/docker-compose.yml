@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   plex:
     image: lscr.io/linuxserver/plex:latest
@@ -8,14 +6,13 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=UTC
-      - VERSION=docker
+      - TZ=America/New_York
     volumes:
-      - ../config:/config
-      - ../transcode:/transcode
-      - ../data/movies:/data/movies
-      - ../data/tv:/data/tv
-      - ../data/music:/data/music
+      - ${EXTERNAL_DRIVE}/plex-me-hard/config:/config
+      - ${EXTERNAL_DRIVE}/plex-me-hard/transcode:/transcode
+      - ${EXTERNAL_DRIVE}/plex-me-hard/data/movies:/data/movies
+      - ${EXTERNAL_DRIVE}/plex-me-hard/data/tv:/data/tv
+      - ${EXTERNAL_DRIVE}/plex-me-hard/data/music:/data/music
     restart: unless-stopped
 
   converter:
@@ -23,9 +20,9 @@ services:
     container_name: media-converter
     volumes:
       - ../input:/input
-      - ../data/movies:/output/movies
-      - ../data/tv:/output/tv
-      - ../data/music:/output/music
+      - ${EXTERNAL_DRIVE}/plex-me-hard/data/movies:/output/movies
+      - ${EXTERNAL_DRIVE}/plex-me-hard/data/tv:/output/tv
+      - ${EXTERNAL_DRIVE}/plex-me-hard/data/music:/output/music
     environment:
       - INPUT_DIR=/input
       - OUTPUT_MOVIES=/output/movies
@@ -39,11 +36,11 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=UTC
+      - TZ=America/New_York
     volumes:
-      - ../torrent/config:/config
-      - ../torrent/downloads:/downloads
-      - ../torrent/watch:/watch
+      - ${EXTERNAL_DRIVE}/plex-me-hard/torrent/config:/config
+      - ${EXTERNAL_DRIVE}/plex-me-hard/torrent/downloads:/downloads
+      - ${EXTERNAL_DRIVE}/plex-me-hard/torrent/watch:/watch
       - ../input:/input
     ports:
       - 9091:9091
