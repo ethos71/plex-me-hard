@@ -11,10 +11,37 @@ TORRENT_COMPLETE="$PROJECT_ROOT/torrent/downloads/complete"
 MOVIES_DIR="$PROJECT_ROOT/data/movies"
 MUSIC_DIR="$PROJECT_ROOT/data/music"
 TV_DIR="$PROJECT_ROOT/data/tv"
+EXTERNAL_DRIVE="/media/dominick/TOSHIBA MQ01ABD1"
+CRITICAL_THRESHOLD=45  # Alert at 45% to prevent drive failure at 50%
 
 echo "=========================================="
 echo "  Processing Completed Torrents"
 echo "=========================================="
+echo ""
+
+# Check drive capacity before processing - CRITICAL: Drive fails at 50%
+if [ -d "$EXTERNAL_DRIVE" ]; then
+    DRIVE_USAGE=$(df -h "$EXTERNAL_DRIVE" | awk 'NR==2 {print $5}' | sed 's/%//')
+    echo "External Drive Capacity: ${DRIVE_USAGE}%"
+    
+    if [ "$DRIVE_USAGE" -ge "$CRITICAL_THRESHOLD" ]; then
+        echo ""
+        echo "⚠️  ═══════════════════════════════════════════════════════════"
+        echo "⚠️  CRITICAL WARNING: Drive is at ${DRIVE_USAGE}% capacity!"
+        echo "⚠️  This drive is KNOWN TO FAIL after 50% capacity."
+        echo "⚠️  STOPPING - CANNOT PROCESS MORE FILES"
+        echo "⚠️  ═══════════════════════════════════════════════════════════"
+        echo ""
+        echo "Required actions:"
+        echo "  1. Clean up old/unwatched files"
+        echo "  2. Compress existing files"
+        echo "  3. Migrate to a new drive"
+        echo ""
+        exit 1
+    elif [ "$DRIVE_USAGE" -ge 40 ]; then
+        echo "⚠️  Warning: Drive at ${DRIVE_USAGE}% - approaching 45% threshold"
+    fi
+fi
 echo ""
 
 # Function to determine media type

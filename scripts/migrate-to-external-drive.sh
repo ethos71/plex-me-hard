@@ -8,6 +8,7 @@ set -e
 EXTERNAL_DRIVE="/media/dominick/TOSHIBA MQ01ABD1"
 PROJECT_DIR="/home/dominick/workspace/plex-me-hard"
 PLEX_DATA_DIR="${EXTERNAL_DRIVE}/plex-me-hard"
+CRITICAL_THRESHOLD=45  # Alert at 45% to prevent drive failure at 50%
 
 echo "╔══════════════════════════════════════════════════════════════╗"
 echo "║     PLEX-ME-HARD: MIGRATE TO EXTERNAL DRIVE                 ║"
@@ -21,8 +22,29 @@ if [ ! -d "$EXTERNAL_DRIVE" ]; then
     exit 1
 fi
 
+# Check drive capacity - CRITICAL: Drive fails at 50%
+DRIVE_USAGE=$(df -h "$EXTERNAL_DRIVE" | awk 'NR==2 {print $5}' | sed 's/%//')
 echo "✓ External Drive Found: $EXTERNAL_DRIVE"
 echo "  Available Space: $(df -h "$EXTERNAL_DRIVE" | awk 'NR==2 {print $4}')"
+echo "  Current Usage: ${DRIVE_USAGE}%"
+
+if [ "$DRIVE_USAGE" -ge "$CRITICAL_THRESHOLD" ]; then
+    echo ""
+    echo "⚠️  ═══════════════════════════════════════════════════════════"
+    echo "⚠️  CRITICAL WARNING: Drive is at ${DRIVE_USAGE}% capacity!"
+    echo "⚠️  This drive is KNOWN TO FAIL after 50% capacity."
+    echo "⚠️  STOPPING MIGRATION - IMMEDIATE ACTION REQUIRED"
+    echo "⚠️  ═══════════════════════════════════════════════════════════"
+    echo ""
+    echo "Options to resolve:"
+    echo "  1. Clean up old/unwatched files"
+    echo "  2. Compress existing files"
+    echo "  3. Migrate to a new drive"
+    echo ""
+    exit 1
+elif [ "$DRIVE_USAGE" -ge 40 ]; then
+    echo "⚠️  Warning: Drive at ${DRIVE_USAGE}% - approaching 45% threshold"
+fi
 echo ""
 
 # Stop Plex services
