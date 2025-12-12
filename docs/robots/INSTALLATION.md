@@ -1,118 +1,94 @@
-# Installation Guide - Run These Commands Manually
+# Plex Installation Guide
 
-## You need to run these commands on your server to get Plex running:
+## Server Setup
 
-### Step 1: Install Docker
+### Step 1: Install Plex Media Server
 
-```bash
-curl -fsSL https://get.docker.com -o get-docker.sh
-sudo sh get-docker.sh
-sudo usermod -aG docker $USER
-```
-
-**Then logout and login again** (or run `newgrp docker`)
-
-### Step 2: Install Docker Compose
+Download and install Plex from: https://www.plex.tv/media-server-downloads/
 
 ```bash
-sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-sudo chmod +x /usr/local/bin/docker-compose
+# For Ubuntu/Debian:
+wget https://downloads.plex.tv/plex-media-server-new/1.41.3.9314-a0bfb8370/debian/plexmediaserver_1.41.3.9314-a0bfb8370_amd64.deb
+sudo dpkg -i plexmediaserver_*.deb
+sudo systemctl enable plexmediaserver
+sudo systemctl start plexmediaserver
 ```
 
-Verify installation:
-```bash
-docker --version
-docker-compose --version
-```
-
-### Step 3: Configure Google Drive (One-time)
-
-```bash
-cd /home/dominick/workspace/plex-me-hard
-./setup.sh
-```
-
-Follow the prompts to:
-- Authenticate with Google Drive
-- Verify your "Kingdom of Heaven" file is visible
-
-### Step 4: Start All Services
-
-```bash
-cd /home/dominick/workspace/plex-me-hard
-docker-compose up -d
-```
-
-### Step 5: Check Status
-
-```bash
-cd /home/dominick/workspace/plex-me-hard
-docker-compose ps
-./check-status.sh
-```
-
-### Step 6: Access Plex
+### Step 2: Initial Setup
 
 1. Get your server IP:
    ```bash
    hostname -I | awk '{print $1}'
    ```
 
-2. Open in browser:
-   - If on same machine: `http://localhost:32400/web`
-   - If remote: `http://YOUR_IP:32400/web`
+2. Open in browser: `http://YOUR_IP:32400/web`
 
-3. Login with:
+3. Login with your Plex account:
    - Email: `dominick.do.campbell+1@gmail.com`
    - Password: `Cmsc101101!`
 
-4. Add libraries:
-   - Movies: `/data/movies`
-   - TV Shows: `/data/tv`
-   - Music: `/data/music`
+4. Complete the setup wizard
 
-### Step 7: Sync Your Movie
+### Step 3: Add Media Libraries
 
-```bash
-cd /home/dominick/workspace/plex-me-hard
-./sync-now.sh
-```
+1. In Plex web interface, click "Add Library"
+2. Choose library type (Movies, TV Shows, Music)
+3. Add folder: `/var/lib/plexmediaserver/Library/Movies`
+4. Click "Add Library"
 
-Watch conversion:
-```bash
-docker-compose logs -f converter
-```
+### Step 4: Enable Subtitles (Optional)
+
+1. Settings → Agents → Movies
+2. Enable "Local Media Assets" and "OpenSubtitles.org"
+3. Settings → Languages
+4. Select preferred subtitle language
+5. Enable "Automatically select audio and subtitle tracks"
 
 ---
 
-## Quick Reference
+## Insignia Fire TV Setup
 
-**Start services:**
-```bash
-docker-compose up -d
-```
+### Install Plex App
 
-**Stop services:**
-```bash
-docker-compose down
-```
+1. From Insignia TV home screen, navigate to **"Find"** or **"Search"**
+2. Search for **"Plex"**
+3. Select the Plex app from Amazon Appstore
+4. Click **"Download"** or **"Get"**
+5. Wait for installation to complete
 
-**View logs:**
-```bash
-docker-compose logs -f
-```
+### Sign In to Plex
 
-**Sync from Google Drive:**
-```bash
-./sync-now.sh
-```
+1. Launch the Plex app
+2. Select **"Sign In"**
+3. You have two options:
+   - **Option A:** Use the 4-digit PIN code shown on TV
+     - Go to `plex.tv/link` on your phone/computer
+     - Enter the 4-digit code
+     - Sign in with your Plex account
+   - **Option B:** Enter credentials directly on TV
+     - Email: `dominick.do.campbell+1@gmail.com`
+     - Password: `Cmsc101101!`
 
-**Check movie status:**
-```bash
-./check-status.sh
-```
+### Connect to Your Server
 
-**Troubleshoot Plex:**
-```bash
-./troubleshoot-plex.sh
-```
+1. After signing in, Plex will automatically detect servers on your network
+2. Select your server (e.g., "dominick-HP-ZBook-Firefly-15GZ")
+3. If multiple servers appear, choose the one with your content
+4. Your movies should now appear in the Movies library
+
+### Troubleshooting
+
+**Can't see your server?**
+- Make sure TV and server are on the same network
+- Restart Plex Media Server: `sudo systemctl restart plexmediaserver`
+- Check firewall: `sudo ufw allow 32400/tcp`
+
+**Library appears empty?**
+- Scan library: Settings → Libraries → Movies → Scan Library Files
+- Check file permissions: `sudo chmod -R 755 /var/lib/plexmediaserver/Library/Movies`
+- Verify files exist: `ls -la /var/lib/plexmediaserver/Library/Movies`
+
+**Multiple duplicate servers?**
+- Sign out of Plex app on TV
+- Restart Plex server
+- Sign back into Plex app

@@ -25,14 +25,14 @@ AI agent for managing the Plex-Me-Hard media server system. Handles Plex server 
 
 ### Core Functions
 - Monitor and manage Plex media server
-- Convert media files to Plex-optimized formats
-- Manage Docker containers (Plex + Converter)
+- Move specific files from Downloads folder to Plex
+- Auto-enable Plex subtitle downloads
 - Create and organize documentation in `docs/robots/`
 
 ### Media Management
-- Add movies from local files
-- List and organize media libraries
-- Monitor conversion progress
+- Move movies/TV shows from `/home/dominick/Downloads` to Plex libraries
+- Organize files into proper directories (`data/movies/`, `data/tv/`)
+- Trigger Plex library scans after adding files
 
 ### System Operations
 - Check service status (Plex + Converter)
@@ -78,26 +78,29 @@ plex-me-hard/
 
 ## Common Tasks
 
-### Add Media from Local File
-1. Copy media file to `input/` folder
-2. Converter auto-processes to appropriate folder
-3. File appears in Plex
+### Add Media from Downloads
+1. User specifies file in `/home/dominick/Downloads`
+2. Agent moves file to appropriate Plex folder:
+   - Movies → `/var/lib/plexmediaserver/Movies/`
+   - TV Shows → `/var/lib/plexmediaserver/TV Shows/`
+3. Agent triggers Plex library scan
+4. Subtitles auto-download via Plex agents
 
 ### Check System Status
 ```bash
-cd plex && docker compose ps
+sudo systemctl status plexmediaserver
 ```
 
-### View Conversion Logs
+### Restart Plex
 ```bash
-cd plex && docker compose logs -f converter
+sudo systemctl restart plexmediaserver
 ```
 
-### Restart Services
-```bash
-cd plex && docker compose restart plex
-cd plex && docker compose restart converter
-```
+### Enable Subtitle Downloads
+Plex automatically downloads subtitles when:
+- OpenSubtitles agent is enabled
+- "Search for missing subtitles" is configured
+- Library scans detect new media
 
 ## Important Rules
 
