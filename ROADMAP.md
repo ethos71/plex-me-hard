@@ -60,8 +60,8 @@ The external drive used for Plex media storage has a **known failure point at ap
 - ✅ Drive health monitoring
 
 ### In Progress
-- 🔄 Dragon Ball Z selective episode downloads (Frieza & Cell Sagas)
 - 🔄 Multiple movie torrents processing
+- 🔄 Fixing duplicate Plex server registrations
 
 ### Planned Features
 - [ ] Automatic quality detection and optimization

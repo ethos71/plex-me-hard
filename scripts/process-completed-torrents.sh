@@ -110,35 +110,25 @@ if [ -d "$TORRENT_COMPLETE" ]; then
     # Fix permissions
     sudo chown -R 1000:1000 "$MOVIES_DIR" "$MUSIC_DIR" "$TV_DIR" 2>/dev/null || true
     
+    echo ""
     echo "=========================================="
-    echo "  Downloading Subtitles"
+    echo "  Stopping and Removing Completed Torrents"
     echo "=========================================="
     echo ""
     
-    # Download subtitles for new movies/TV shows
-    cd "$PROJECT_ROOT/plex"
-    if sudo docker compose ps | grep -q "converter.*Up"; then
-        sudo docker compose exec converter python3 /app/subtitle_downloader.py || echo "Subtitle download completed with warnings"
-    else
-        echo "Converter not running, skipping subtitle download"
-    fi
-    
-    echo ""
-    echo "=========================================="
-    echo "  Removing Completed Torrents"
-    echo "=========================================="
-    echo ""
-    
-    # Remove completed torrents from Transmission
+    # Remove completed torrents from Transmission (stops seeding and removes magnet links)
     cd "$PROJECT_ROOT/plex"
     if sudo docker compose ps | grep -q "transmission.*Up"; then
         # Get list of completed torrents
         sudo docker compose exec transmission transmission-remote -l | grep "100%" | awk '{print $1}' | grep -v "^ID$" | while read -r torrent_id; do
             if [ -n "$torrent_id" ]; then
-                echo "Removing torrent ID: $torrent_id"
+                echo "Stopping and removing torrent ID: $torrent_id (stops seeding)"
                 sudo docker compose exec transmission transmission-remote -t "$torrent_id" --remove-and-delete
             fi
         done
+        echo "✓ All completed torrents stopped and removed"
+    else
+        echo "⚠️  Transmission not running, cannot remove torrents"
     fi
     
     echo ""
@@ -146,8 +136,8 @@ if [ -d "$TORRENT_COMPLETE" ]; then
     echo ""
     echo "Files have been:"
     echo "  1. Moved to appropriate Plex directories"
-    echo "  2. Subtitles downloaded (where available)"
-    echo "  3. Torrent files removed from Transmission"
+    echo "  2. Torrents stopped (no longer seeding)"
+    echo "  3. Magnet links and torrent files removed from Transmission"
     echo "  4. Downloaded data cleaned up"
     echo ""
     echo "Plex will automatically detect the new media!"
