@@ -51,21 +51,32 @@ Help the user manage their Plex media server system, including:
 - Project Directory: /home/dominick/workspace/plex-me-hard
 - Docker Services: Plex + Media Converter
 
+## CRITICAL: Working Directory Restrictions
+
+**YOU MUST ONLY OPERATE WITHIN THESE PATHS:**
+1. `/home/dominick/workspace/plex-me-hard/` - Project directory
+2. `/home/dominick/Downloads/` - Torrent downloads (source files)
+3. `/home/dominick/Videos/` - Movies library ONLY
+4. `/home/dominick/TV/` - TV shows library ONLY
+
+**ABSOLUTELY DO NOT:**
+- Access any directories outside these four paths
+- Scan or search the entire home directory or other user directories
+- Modify system directories outside the project scope
+
 **Directory Structure:**
 ```
 /home/dominick/workspace/plex-me-hard/
 ├── docs/robots/       # ALL documentation goes here
 ├── scripts/          # Helper scripts
+├── plex/             # Plex configuration
 └── .github/
     ├── agents/       # Agent definitions
     └── prompts/      # Prompt templates
 
-/var/lib/plexmediaserver/  # Plex system directories
-├── Movies/           # Plex movies library
-├── TV Shows/         # TV shows library
-└── Music/            # Music library
-
-/home/dominick/Downloads/  # Source for new media files
+/home/dominick/Downloads/ # Torrent downloads (source files)
+/home/dominick/Videos/    # Movies library (ONLY media path)
+/home/dominick/TV/        # TV shows library (ONLY media path)
 ```
 
 ## Critical Rules
@@ -96,17 +107,17 @@ Help the user manage their Plex media server system, including:
 
 ## Common User Requests
 
-### "Add a movie from Downloads"
-1. User specifies the file name in `/home/dominick/Downloads`
-2. Move file to `/var/lib/plexmediaserver/Movies/`
-3. Fix permissions: `sudo chown plex:plex /var/lib/plexmediaserver/Movies/*`
-4. Scan library via Plex API or web UI
+### "Move movie from Downloads to Plex"
+1. User specifies file in `/home/dominick/Downloads/`
+2. Move file to `/home/dominick/Videos/`
+3. Rename to proper Plex format: "Movie Title (Year).ext"
+4. Trigger Plex library scan
 5. Plex auto-downloads subtitles if configured
 
 ### "I can't see my movie in Plex"
-1. Check file is in movies folder: `ls -lh /var/lib/plexmediaserver/Movies/`
-2. Check permissions: File should be owned by `plex:plex`
-3. Check Plex logs: `sudo journalctl -u plexmediaserver -n 50`
+1. Check file is in movies folder: `ls -lh /home/dominick/Videos/`
+2. Check file naming follows Plex conventions
+3. Check Plex logs in web UI or docker logs
 4. Manually scan library in Plex web UI if needed
 
 ### "Set up Samsung TV"
@@ -131,11 +142,16 @@ sudo systemctl restart plexmediaserver   # Restart Plex
 sudo journalctl -u plexmediaserver -n 50 # View logs
 ```
 
-**File Operations:**
+**File Operations (RESTRICTED TO ALLOWED PATHS ONLY):**
 ```bash
-ls -lh /home/dominick/Downloads/           # List available files
-sudo mv /home/dominick/Downloads/movie.mp4 /var/lib/plexmediaserver/Movies/
-sudo chown plex:plex /var/lib/plexmediaserver/Movies/*  # Fix permissions
+# ONLY work within these directories:
+ls -lh /home/dominick/Downloads/           # List downloads
+ls -lh /home/dominick/Videos/              # List movies
+ls -lh /home/dominick/TV/                  # List TV shows
+ls -lh /home/dominick/workspace/plex-me-hard/  # Project files
+
+# Move and rename from Downloads to Plex
+mv /home/dominick/Downloads/movie.mp4 /home/dominick/Videos/Movie\ Title\ (2024).mp4
 ```
 
 **Plex Library Scan:**
@@ -158,11 +174,13 @@ Use Plex web UI at http://localhost:32400/web or trigger via API
 
 ## Key Behaviors
 
+- **CRITICAL**: ONLY work within `/home/dominick/workspace/plex-me-hard/`, `/home/dominick/Downloads/`, `/home/dominick/Videos/`, and `/home/dominick/TV/`
 - When creating documentation → ALWAYS use `docs/robots/`
 - When working with Plex → ALWAYS use `plex/` folder for config
-- When adding media → Copy to `input/` for conversion, then appears in `data/movies/`
+- When managing media → Move from `/home/dominick/Downloads/` to `/home/dominick/Videos/` or `/home/dominick/TV/`
 - When troubleshooting → Check logs first, then status, then restart
 - When organizing code → Keep related files in appropriate folders
+- **NEVER access directories outside the four allowed paths**
 
 ## Success Criteria
 

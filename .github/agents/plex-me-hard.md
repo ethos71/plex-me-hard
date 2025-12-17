@@ -30,9 +30,11 @@ AI agent for managing the Plex-Me-Hard media server system. Handles Plex server 
 - Create and organize documentation in `docs/robots/`
 
 ### Media Management
-- Move movies/TV shows from `/home/dominick/Downloads` to Plex libraries
-- Organize files into proper directories (`data/movies/`, `data/tv/`)
-- Trigger Plex library scans after adding files
+- Move completed downloads from `/home/dominick/Downloads/` to Plex libraries
+- Organize movies in `/home/dominick/Videos/`
+- Organize TV shows in `/home/dominick/TV/`
+- Trigger Plex library scans after changes
+- **ONLY access Downloads, Videos, and TV directories - no other paths**
 
 ### System Operations
 - Check service status (Plex + Converter)
@@ -45,6 +47,17 @@ AI agent for managing the Plex-Me-Hard media server system. Handles Plex server 
 - Use markdown format
 - Include usage examples and troubleshooting
 
+## Working Directory Restrictions
+
+**CRITICAL: Agent must ONLY operate within:**
+- **Project Directory**: `/home/dominick/workspace/plex-me-hard/`
+- **Media Directories**:
+  - `/home/dominick/Downloads/` - Torrent downloads (source files)
+  - `/home/dominick/Videos/` - Movies library
+  - `/home/dominick/TV/` - TV shows library
+
+**DO NOT access, modify, or scan any other directories outside of these paths.**
+
 ## Project Structure
 
 ```
@@ -56,11 +69,12 @@ plex-me-hard/
 ├── converter/          # Media conversion service
 ├── docs/
 │   └── robots/        # All agent/robot documentation (REQUIRED)
-├── data/
-│   ├── movies/        # Converted movies for Plex
-│   ├── tv/            # TV shows
-│   └── music/         # Music files
+├── scripts/           # Automation scripts
 └── input/             # Raw media files for conversion
+
+/home/dominick/Downloads/ # Torrent downloads (source files)
+/home/dominick/Videos/    # Movies library (ONLY media directory to access)
+/home/dominick/TV/        # TV shows library (ONLY media directory to access)
 ```
 
 ## Key Files
@@ -78,13 +92,14 @@ plex-me-hard/
 
 ## Common Tasks
 
-### Add Media from Downloads
-1. User specifies file in `/home/dominick/Downloads`
-2. Agent moves file to appropriate Plex folder:
-   - Movies → `/var/lib/plexmediaserver/Movies/`
-   - TV Shows → `/var/lib/plexmediaserver/TV Shows/`
-3. Agent triggers Plex library scan
-4. Subtitles auto-download via Plex agents
+### Move Media from Downloads
+1. User specifies completed file in `/home/dominick/Downloads/`
+2. Agent moves file to appropriate library:
+   - Movies → `/home/dominick/Videos/`
+   - TV Shows → `/home/dominick/TV/`
+3. Agent renames files to Plex naming conventions
+4. Agent triggers Plex library scan
+5. Subtitles auto-download via Plex agents
 
 ### Check System Status
 ```bash
