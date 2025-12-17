@@ -1,0 +1,50 @@
+#!/bin/bash
+
+echo "=========================================="
+echo "Fix Plex Split Albums - Nuclear Option"
+echo "=========================================="
+echo ""
+echo "This script will:"
+echo "1. Move all music to a temporary location"
+echo "2. Tell Plex to empty trash (removing cached metadata)"
+echo "3. Move music back"
+echo "4. Rescan with fresh metadata"
+echo ""
+echo "Press ENTER to continue or Ctrl+C to cancel..."
+read
+
+MUSIC_DIR="/home/dominick/Music"
+TEMP_DIR="/tmp/music_temp_$$"
+
+echo "Step 1: Moving music to temporary location..."
+mkdir -p "$TEMP_DIR"
+mv "$MUSIC_DIR"/* "$TEMP_DIR/"
+echo "  ✓ Music moved to: $TEMP_DIR"
+
+echo ""
+echo "Step 2: MANUAL ACTION REQUIRED"
+echo "=========================================="
+echo "Go to Plex and do the following:"
+echo "1. Settings → Libraries → Music"
+echo "2. Click three dots → 'Scan Library Files' (wait for it to finish)"
+echo "3. Click three dots → 'Empty Trash'"
+echo "4. Wait for trash to be emptied"
+echo ""
+echo "Press ENTER when done..."
+read
+
+echo ""
+echo "Step 3: Moving music back..."
+mv "$TEMP_DIR"/* "$MUSIC_DIR/"
+rmdir "$TEMP_DIR"
+echo "  ✓ Music restored to: $MUSIC_DIR"
+
+echo ""
+echo "Step 4: MANUAL ACTION REQUIRED"
+echo "=========================================="
+echo "Go back to Plex and:"
+echo "1. Settings → Libraries → Music"
+echo "2. Click three dots → 'Scan Library Files'"
+echo "3. Wait for scan to complete"
+echo ""
+echo "Your albums should now be properly grouped!"
