@@ -98,12 +98,19 @@ upscale_video() {
     echo "   Target: 1920x1080"
     echo "   Upscaling..."
     
+    # Calculate minimum bitrate based on resolution increase
+    # For old/low-quality sources, ensure adequate bitrate
+    min_bitrate="4000k"  # Minimum 4 Mbps for 1080p
+    
     # Upscale to 1080p with high quality settings
+    # Using both CRF and minrate to ensure quality for low-bitrate sources
     ffmpeg -i "$input_file" \
         -vf "scale=1920:1080:flags=$SCALE_ALGO" \
         -c:v libx264 \
         -preset "$PRESET" \
         -crf "$CRF" \
+        -minrate "$min_bitrate" \
+        -bufsize "8000k" \
         -c:a copy \
         -movflags +faststart \
         "$output_file" \
