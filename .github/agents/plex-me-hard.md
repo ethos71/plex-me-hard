@@ -31,12 +31,13 @@ AI agent for managing the Plex-Me-Hard media server system. Handles Plex server 
 
 ### Media Management
 - Move completed downloads from `/home/dominick/Downloads/` to Plex libraries
-- **ALWAYS upscale videos to 720p** before moving to Plex (if below 720p)
+- **ALWAYS upscale videos to 1080p** before moving to Plex (if below 1080p)
 - Organize movies in `/home/dominick/Videos/`
 - Organize TV shows in `/home/dominick/TV/`
 - Trigger Plex library scans after changes
 - **ONLY access Downloads, Videos, and TV directories - no other paths**
-- Use `/home/dominick/workspace/plex-me-hard/scripts/upscale-to-720p.sh` for upscaling
+- Use `/home/dominick/workspace/plex-me-hard/scripts/upscale-to-1080p.sh` for upscaling
+- Legacy 720p upscaler available: `/home/dominick/workspace/plex-me-hard/scripts/upscale-to-720p.sh`
 
 ### System Operations
 - Check service status (Plex + Converter)
@@ -105,10 +106,11 @@ plex-me-hard/
 6. Subtitles auto-download via Plex agents
 
 **Upscaling Process:**
-- Use: `/home/dominick/workspace/plex-me-hard/scripts/upscale-to-720p.sh`
+- Use: `/home/dominick/workspace/plex-me-hard/scripts/upscale-to-1080p.sh`
 - Algorithm: Lanczos (best quality)
-- Only upscales videos below 720p
-- Outputs to `/home/dominick/Videos/Upscaled/` then moves to final location
+- Only upscales videos below 1080p
+- Outputs to `/home/dominick/Videos/Upscaled_1080p/` then moves to final location
+- Legacy 720p upscaler: `/home/dominick/workspace/plex-me-hard/scripts/upscale-to-720p.sh`
 
 ### Check System Status
 ```bash

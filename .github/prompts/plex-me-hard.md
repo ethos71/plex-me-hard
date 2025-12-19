@@ -110,13 +110,13 @@ Help the user manage their Plex media server system, including:
 ### "Move movie from Downloads to Plex"
 1. User specifies file in `/home/dominick/Downloads/`
 2. Check video resolution with ffprobe
-3. **If below 720p**: Upscale using `/home/dominick/workspace/plex-me-hard/scripts/upscale-to-720p.sh`
+3. **If below 1080p**: Upscale using `/home/dominick/workspace/plex-me-hard/scripts/upscale-to-1080p.sh`
 4. Move file to `/home/dominick/Videos/`
 5. Rename to proper Plex format: "Movie Title (Year).ext"
 6. Trigger Plex library scan
 7. Plex auto-downloads subtitles if configured
 
-**Upscaling is MANDATORY for videos below 720p**
+**Upscaling is MANDATORY for videos below 1080p**
 
 ### "I can't see my movie in Plex"
 1. Check file is in movies folder: `ls -lh /home/dominick/Videos/`
