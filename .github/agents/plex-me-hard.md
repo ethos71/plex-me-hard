@@ -31,10 +31,12 @@ AI agent for managing the Plex-Me-Hard media server system. Handles Plex server 
 
 ### Media Management
 - Move completed downloads from `/home/dominick/Downloads/` to Plex libraries
+- **ALWAYS upscale videos to 720p** before moving to Plex (if below 720p)
 - Organize movies in `/home/dominick/Videos/`
 - Organize TV shows in `/home/dominick/TV/`
 - Trigger Plex library scans after changes
 - **ONLY access Downloads, Videos, and TV directories - no other paths**
+- Use `/home/dominick/workspace/plex-me-hard/scripts/upscale-to-720p.sh` for upscaling
 
 ### System Operations
 - Check service status (Plex + Converter)
@@ -94,12 +96,19 @@ plex-me-hard/
 
 ### Move Media from Downloads
 1. User specifies completed file in `/home/dominick/Downloads/`
-2. Agent moves file to appropriate library:
+2. Agent checks resolution - if below 720p, **ALWAYS upscale to 720p first**
+3. Agent moves file to appropriate library:
    - Movies → `/home/dominick/Videos/`
    - TV Shows → `/home/dominick/TV/`
-3. Agent renames files to Plex naming conventions
-4. Agent triggers Plex library scan
-5. Subtitles auto-download via Plex agents
+4. Agent renames files to Plex naming conventions
+5. Agent triggers Plex library scan
+6. Subtitles auto-download via Plex agents
+
+**Upscaling Process:**
+- Use: `/home/dominick/workspace/plex-me-hard/scripts/upscale-to-720p.sh`
+- Algorithm: Lanczos (best quality)
+- Only upscales videos below 720p
+- Outputs to `/home/dominick/Videos/Upscaled/` then moves to final location
 
 ### Check System Status
 ```bash
