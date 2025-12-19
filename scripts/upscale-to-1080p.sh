@@ -98,25 +98,38 @@ upscale_video() {
     echo "   Target: 1920x1080"
     echo "   Upscaling..."
     
-    # Calculate minimum bitrate based on resolution increase
-    # For old/low-quality sources, ensure adequate bitrate
-    min_bitrate="4000k"  # Minimum 4 Mbps for 1080p
-    
-    # Upscale to 1080p with high quality settings
-    # Using both CRF and minrate to ensure quality for low-bitrate sources
-    ffmpeg -i "$input_file" \
-        -vf "scale=1920:1080:flags=$SCALE_ALGO" \
-        -c:v libx264 \
-        -preset "$PRESET" \
-        -crf "$CRF" \
-        -minrate "$min_bitrate" \
-        -bufsize "8000k" \
-        -c:a copy \
-        -movflags +faststart \
-        "$output_file" \
-        -hide_banner \
-        -loglevel error \
-        -stats
+    # For very low resolution sources (< 480p), use constant bitrate
+    # Otherwise use CRF for better quality/size balance
+    if [ "$height" -lt 480 ]; then
+        # Low quality source - use constant bitrate 6 Mbps
+        echo "   Low quality source detected - using 6 Mbps constant bitrate"
+        ffmpeg -i "$input_file" \
+            -vf "scale=1920:1080:flags=$SCALE_ALGO" \
+            -c:v libx264 \
+            -preset "$PRESET" \
+            -b:v 6000k \
+            -maxrate 8000k \
+            -bufsize 12000k \
+            -c:a copy \
+            -movflags +faststart \
+            "$output_file" \
+            -hide_banner \
+            -loglevel error \
+            -stats
+    else
+        # Higher quality source - use CRF
+        ffmpeg -i "$input_file" \
+            -vf "scale=1920:1080:flags=$SCALE_ALGO" \
+            -c:v libx264 \
+            -preset "$PRESET" \
+            -crf "$CRF" \
+            -c:a copy \
+            -movflags +faststart \
+            "$output_file" \
+            -hide_banner \
+            -loglevel error \
+            -stats
+    fi
     
     if [ $? -eq 0 ]; then
         # Get file sizes
