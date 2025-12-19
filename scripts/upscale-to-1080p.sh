@@ -98,15 +98,23 @@ upscale_video() {
     echo "   Target: 1920x1080"
     echo "   Upscaling..."
     
+    # Limit FFmpeg threads to avoid consuming all CPU/memory
+    # Default: Use half of available CPU cores for better system responsiveness
+    max_threads=$(nproc)
+    threads=$((max_threads / 2))
+    [ "$threads" -lt 2 ] && threads=2  # Minimum 2 threads
+    
     # For very low resolution sources (< 480p), use constant bitrate
     # Otherwise use CRF for better quality/size balance
     if [ "$height" -lt 480 ]; then
         # Low quality source - use constant bitrate 6 Mbps
         echo "   Low quality source detected - using 6 Mbps constant bitrate"
-        ffmpeg -i "$input_file" \
+        echo "   Using $threads threads (system has $max_threads cores)"
+        nice -n 10 ffmpeg -i "$input_file" \
             -vf "scale=1920:1080:flags=$SCALE_ALGO" \
             -c:v libx264 \
             -preset "$PRESET" \
+            -threads "$threads" \
             -b:v 6000k \
             -maxrate 8000k \
             -bufsize 12000k \
@@ -118,10 +126,12 @@ upscale_video() {
             -stats
     else
         # Higher quality source - use CRF
-        ffmpeg -i "$input_file" \
+        echo "   Using $threads threads (system has $max_threads cores)"
+        nice -n 10 ffmpeg -i "$input_file" \
             -vf "scale=1920:1080:flags=$SCALE_ALGO" \
             -c:v libx264 \
             -preset "$PRESET" \
+            -threads "$threads" \
             -crf "$CRF" \
             -c:a copy \
             -movflags +faststart \
